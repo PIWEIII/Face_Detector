@@ -57,6 +57,7 @@ class Eigen_Faces:
             counter += 1
             source_img = cv2.imread(i)
             s_img = cv2.resize(source_img,(s_img_w,s_img_h),0,0,cv2.INTER_LINEAR) #修改尺寸
+            #规定最后两张图片为待检测图片
             if counter == 7 or counter == 8:
                 cv2.imwrite(target_dir + "t" + str(counter-6)+".png",s_img)
             else:
