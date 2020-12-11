@@ -18,12 +18,6 @@ class LBPH_Method:
         recognizer = cv2.face.LBPHFaceRecognizer_create()
         #训练
         recognizer.train(self.images,np.array(self.labels))
-        #分析待检测图片
-        predict_image = t_img
-        #得到label和confidence
-        label,confidence = recognizer.predict(predict_image)
-        print("标记(label) = ",label)
-        print("可信度(confidence) = ",confidence)
         #加载级联分类器,标识出图像中的人物
         faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt.xml")
         #调用detectMultiScale
@@ -35,8 +29,16 @@ class LBPH_Method:
         )
         #对每一个人脸标注矩形，并放置文字
         for (x,y,w,h) in faces:
+            #分析待检测图片       
+            predict_image = t_img
+            #得到label和confidence
+            label,confidence = recognizer.predict(predict_image)
+            print("标记(label) = ",label)
+            confidence = round(confidence,2)
+            print("可信度(confidence) = ",confidence)
             cv2.rectangle(t_img,(x,y),(x+w,y+w),(0,255,0),2)
             cv2.putText(t_img,pic_names[label],(x,y),cv2.FONT_HERSHEY_COMPLEX,1,(0,255,0),5)
+            cv2.putText(t_img,str(confidence),(x,y+w),cv2.FONT_HERSHEY_COMPLEX,0.5,(255,0,0),1)
         cv2.imshow("result",t_img)
         cv2.waitKey(0)
         
